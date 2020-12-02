@@ -12,6 +12,7 @@ def read_input():
 
 def parse_line(line):
     match = re.match("(\d*)-(\d*) (.): (.*)", line)
+
     return int(match.group(1)), int(match.group(2)), match.group(3), match.group(4)
 
 
