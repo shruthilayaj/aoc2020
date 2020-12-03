@@ -22,10 +22,8 @@ def password_philosophy(data):
         count = password.count(match_char)
 
         return count <= max_occurence and count >= min_occurence
-
-    valid_lines = functools.reduce(lambda x, y: x + y, list(map(is_match, data)))
     
-    return valid_lines
+    return functools.reduce(lambda x, y: x + y, list(map(is_match, data)))
 
 
 def password_philosophy_2(data):
@@ -33,10 +31,8 @@ def password_philosophy_2(data):
         index_1, index_2, match_char, password = parse_line(line)
 
         return (password[index_1 - 1] == match_char) ^ (password[index_2 - 1] == match_char)
-
-    valid_lines = functools.reduce(lambda x, y: x + y, list(map(is_match, data)))
     
-    return valid_lines
+    return functools.reduce(lambda x, y: x + y, list(map(is_match, data)))
 
 
 if __name__ == "__main__":
