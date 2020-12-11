@@ -35,12 +35,10 @@ def adapter_array_2(records):
     records.insert(0, 0)
 
     for record in records:
-        paths_from_record = 0
         for j in range(1, 4):
             if record + j in records:
                 paths_from_record += 1
-                num = permutations_dict[record] + permutations_dict.get(record + j, 0)
-                permutations_dict[record + j] = num
+                permutations_dict[record + j] = permutations_dict[record] + permutations_dict.get(record + j, 0)
     
     return permutations_dict[max(records)]
 
