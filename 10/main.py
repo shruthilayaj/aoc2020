@@ -37,11 +37,9 @@ def adapter_array_2(records):
     for record in records:
         for j in range(1, 4):
             if record + j in records:
-                paths_from_record += 1
                 permutations_dict[record + j] = permutations_dict[record] + permutations_dict.get(record + j, 0)
     
     return permutations_dict[max(records)]
-
 
 
 if __name__ == "__main__":
