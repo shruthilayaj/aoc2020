@@ -42,9 +42,18 @@ def adapter_array_2(records):
     return permutations_dict[max(records)]
 
 
+def adapter_array_recursive(records, i):
+    if i == 0:
+        return 1
+    if i not in records:
+        return 0
+
+    return adapter_array_recursive(records, i - 1) + adapter_array_recursive(records, i - 2) + adapter_array_recursive(records, i - 3)
+
+
 if __name__ == "__main__":
     records = [int(x) for x in read_input()]
     records.append(max(records) + 3)  # Adding the connection to the device
 
     print(f"Part 1: {adapter_array(records)}")
-    print(f"Part 2: {adapter_array_2(records)}")
+    print(f"Part 2: {adapter_array_recursive(records, max(records))}")
