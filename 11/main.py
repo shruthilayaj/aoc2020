@@ -101,5 +101,5 @@ def seating_system_2(records):
 
 if __name__ == "__main__":
     records = read_input()
-    print(f"Part 1: {seating_system(deepcopy(records))}")
-    print(f"Part 2: {seating_system_2(records)}")
+    print(f"Part 1: {seating_system(read_input())}")
+    print(f"Part 2: {seating_system_2(read_input())}")
