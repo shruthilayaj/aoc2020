@@ -69,6 +69,7 @@ def seating_system_2(records):
 
                     if adj_seat == "#":
                         filled_count += 1
+
                     elif adj_seat == ".":
                         if i_ == 0:
                             new_x = 0
