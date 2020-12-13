@@ -2,6 +2,9 @@ from math import sin, cos, radians
 import os
 import re
 
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
 
 def read_input():
     filename = os.path.join(os.path.dirname(__file__), "input.txt")
@@ -22,6 +25,7 @@ def rain_risk(records):
     y = 0
 
     coordinate = (x, y, bearing)
+    traversed_coordinates = [coordinate]
 
     func = {
         "N": lambda c, v: (c[0], c[1] + v, c[2]),
@@ -35,6 +39,23 @@ def rain_risk(records):
 
     for action, magnitude in records:
         coordinate = func[action](coordinate, magnitude)
+        traversed_coordinates.append(coordinate)
+
+    x = [c[0] for c in traversed_coordinates]
+    y = [c[1] for c in traversed_coordinates]
+
+    fig = plt.figure()
+    plt.xlim(min(x) - 5, max(x) + 5)
+    plt.ylim(min(y) - 5, max(y) + 5)
+
+    graph, = plt.plot([], [])
+
+    def animate(i):
+        graph.set_data(x[:i+1], y[:i+1])
+        return graph
+
+    ani = FuncAnimation(fig, animate, repeat=False, interval=200)
+    plt.show()
     
     return abs(coordinate[0]) + abs(coordinate[1])
 
@@ -50,7 +71,7 @@ def rain_risk_2(records):
         "W": lambda c, w, v: (c, (w[0] - v, w[1])),
         "R": lambda c, w, v: (c, (w[0] * int(cos(radians(v))) + w[1] * int(sin(radians(v))), w[1] * int(cos(radians(v))) - w[0] * int(sin(radians(v))))),
         "L": lambda c, w, v: (c, (w[0] * int(cos(radians(v))) - w[1] * int(sin(radians(v))), w[0] * int(sin(radians(v))) + w[1] * int(cos(radians(v))))),
-        "F": lambda c, w, v: ((c[0] + v * w[0], c[1] + v* w[1]), w)
+        "F": lambda c, w, v: ((c[0] + v * w[0], c[1] + v* w[1]), w),
     }
 
     for action, magnitude in records:
