@@ -151,7 +151,79 @@ def jurassic_jigsaw(tiles):
     prod = grid[0][0].id * grid[0][dim-1].id * grid[dim -1][dim-1].id * grid[dim-1][0].id
     print(f"Part 1: {prod}")
 
-    return
+    # Stich grid
+    image = ""
+    for i in range(dim):
+        for n in range(len(tile.top)):
+            if n == 0 or n == len(tile.top) - 1:
+                continue
+            for section in grid[i]:
+                lines = section.grid
+                image += "".join(lines[n][1:9])
+            image += "\n"
+
+    total_hash = image.count("#")
+    image = image.strip("\n").split("\n")
+
+    def _rotate(lines):
+        pre_rotated = [list(x) for x in lines]
+        rotated = [list(reversed(col)) for col in zip(*pre_rotated)]
+        rotated = ["".join(r) for r in rotated]
+
+        return rotated
+
+    def _flip(lines):
+        pre_flipped = [list(x) for x in lines]
+        flipped = [pre_flipped[len(pre_flipped)-i-1] for i in range(len(pre_flipped))]
+        flipped = ["".join(f) for f in flipped]
+
+        return flipped
+
+    monsters = 0
+    orientation = 0
+
+    while monsters == 0:
+        for line_num, line in enumerate(image):
+            if line_num == 0:
+                continue
+            if line_num == len(image) - 1:
+                continue
+            i = 0
+            while i <= len(line):
+                try:
+                    line[i + 19]
+                except IndexError:
+                    break
+                if all([
+                    line[i] == "#",
+                    line[i + 5] == "#",
+                    line[i + 6] == "#",
+                    line[i + 11] == "#",
+                    line[i + 12] == "#",
+                    line[i + 17] == "#",
+                    line[i + 18] == "#",
+                    line[i + 19] == "#",
+                ]):
+                    if all([
+                        image[line_num + 1][i + 1] == "#",
+                        image[line_num + 1][i + 4] == "#",
+                        image[line_num + 1][i + 7] == "#",
+                        image[line_num + 1][i + 10] == "#",
+                        image[line_num + 1][i + 13] == "#",
+                        image[line_num + 1][i + 16] == "#",
+                    ]):
+                        if image[line_num - 1][i + 18] == "#":
+                            monsters += 1
+                            i += 19
+
+                i += 1
+
+        image = _rotate(image)
+        orientation += 1
+        if orientation == 4:
+            image = _flip(image)
+
+    print(f"Part 2: {total_hash - monsters * 15}")
 
 
 if __name__ == "__main__":
