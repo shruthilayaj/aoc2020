@@ -1,6 +1,5 @@
 import os
 from copy import deepcopy
-from timeit import default_timer as timer
 
 
 def read_input():
