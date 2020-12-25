@@ -1,3 +1,6 @@
+from aoc2020.utils.decorators import timer
+
+
 class Node(object):
     def __init__(self, data):
         self.data = data
@@ -7,6 +10,7 @@ class Node(object):
         return str(self.data)
 
 
+@timer
 def crab_cups(cups, iterations):
     node_map = {}
     max_ = max(cups)
@@ -38,7 +42,7 @@ def crab_cups(cups, iterations):
             except KeyError:
                 destination_label = max_
                 destination = node_map[destination_label]
-            if destination not in [three_cups_1, three_cups_2, three_cups_3]:
+            if destination != three_cups_1 and destination != three_cups_2 and destination != three_cups_3:
                 break
             destination_label -= 1
 
