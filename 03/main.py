@@ -3,7 +3,7 @@ import os
 
 def read_input():
     filename = os.path.join(os.path.dirname(__file__), "input.txt")
-    with open(filename) as f:    
+    with open(filename) as f:
         data = f.readlines()
 
     return data
@@ -24,7 +24,7 @@ def toboggan_trajectory(topography, slopes):
             if topography[y][x] == "#":
                 trees += 1
             y += down
-        
+
         total *= trees
 
     return total

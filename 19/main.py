@@ -24,24 +24,7 @@ def _parse_rules(rules):
     return new_rules
 
 
-def monster_messages_2(rules, keys_super):
-    """
-    0: 4 1 5
-    1: 2 3 | 3 2
-    2: 4 4 | 5 5
-    3: 4 5 | 5 4
-    4: "a"
-    5: "b"
-
-    [[4 1 5]]
-    [[1 5]] - > [["a"]]
-
-    [[2 3 5], [3 2 5]] -> ["a", "a"]
-
-    [[4 4 3 5], [5 5 3 5], [3 2 5]] -> [["a"], ["a"], ["a"]]
-    [[4 3 5], [5 5 3 5], [3 2 5]] -> [["aa"], ["a"], ["a"]]
-    [[3 5], [5 5 3 5], [3 2 5]] -> [["aaa"], ["a"], ["a"]]
-    """
+def monster_messages(rules, keys_super):
     allowed_strings = []
     allowed_strings_super = []
 
@@ -86,11 +69,11 @@ if __name__ == "__main__":
     rules, messages = read_input()
     rules = _parse_rules(rules)
     messages = messages.split("\n")
-    valid = monster_messages_2(rules, [["0"]])
+    valid = monster_messages(rules, [["0"]])
     valid_sum = sum([1 for x in messages if x in valid])
     print(f"Part 1: {valid_sum}")
-    valid_31 = monster_messages_2(rules, [["31"]])
-    valid_42 = monster_messages_2(rules, [["42"]])
+    valid_31 = monster_messages(rules, [["31"]])
+    valid_42 = monster_messages(rules, [["42"]])
     chunk_size = len(valid_42[0])
 
     count = 0

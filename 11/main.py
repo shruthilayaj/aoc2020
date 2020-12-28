@@ -41,7 +41,7 @@ def seating_system(records):
 
         if records == records_:
             break
-                
+
     return occupied
 
 
@@ -95,7 +95,7 @@ def seating_system_2(records):
 
         if records == records_:
             break
-                
+
     return occupied
 
 

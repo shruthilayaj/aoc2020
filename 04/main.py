@@ -1,11 +1,10 @@
-import functools
 import os
 import re
 
 
 def read_input():
     filename = os.path.join(os.path.dirname(__file__), "input.txt")
-    with open(filename) as f:    
+    with open(filename) as f:
         data = f.read()
 
     return data
@@ -16,7 +15,7 @@ def passport_processing(records):
         matches = re.findall("(ecl|pid|eyr|hcl|byr|iyr|hgt):([^\n\s]*)", line)
         return len(matches) == 7
 
-    return functools.reduce(lambda x, y: x + y, list(map(is_match, records)))
+    return sum(map(is_match, records))
 
 
 def passport_processing_2(records):
@@ -31,7 +30,7 @@ def passport_processing_2(records):
     }
     lines = 0
     for line in records:
-        matches = re.findall("(ecl|pid|eyr|hcl|byr|iyr|hgt):([^\n\s]*)", line)
+        matches = re.findall(r"(ecl|pid|eyr|hcl|byr|iyr|hgt):([^\n\s]*)", line)
         match_index = 0
         for key, value in matches:
             try:
@@ -41,7 +40,7 @@ def passport_processing_2(records):
 
             if re.match(match_str, value):
                 match_index += 1
-        
+
         if match_index == 7:
             lines += 1
 

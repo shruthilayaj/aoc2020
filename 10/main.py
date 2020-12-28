@@ -7,7 +7,7 @@ class InvalidJoltage(Exception):
 
 def read_input():
     filename = os.path.join(os.path.dirname(__file__), "input.txt")
-    with open(filename) as f:    
+    with open(filename) as f:
         data = f.readlines()
 
     return data
@@ -16,7 +16,6 @@ def read_input():
 def adapter_array(records):
     jolt_diff = {3: 0, 2: 0, 1: 0}
     current_joltage = 0
-
 
     for j in sorted(records):
         try:
@@ -38,7 +37,7 @@ def adapter_array_2(records):
         for j in range(1, 4):
             if record + j in records:
                 permutations_dict[record + j] = permutations_dict[record] + permutations_dict.get(record + j, 0)
-    
+
     return permutations_dict[max(records)]
 
 
@@ -48,7 +47,11 @@ def adapter_array_recursive(records, i):
     if i not in records:
         return 0
 
-    return adapter_array_recursive(records, i - 1) + adapter_array_recursive(records, i - 2) + adapter_array_recursive(records, i - 3)
+    return (
+        adapter_array_recursive(records, i - 1) +
+        adapter_array_recursive(records, i - 2) +
+        adapter_array_recursive(records, i - 3)
+    )
 
 
 if __name__ == "__main__":

@@ -1,4 +1,3 @@
-import collections
 import math
 import os
 import re
@@ -6,7 +5,7 @@ import re
 
 def read_input():
     filename = os.path.join(os.path.dirname(__file__), "input.txt")
-    with open(filename) as f:    
+    with open(filename) as f:
         data = f.readlines()
 
     return data
@@ -22,7 +21,7 @@ def shuttle_search(earliest_time, available_buses):
         if next_scheduled < min_time:
             min_time = next_scheduled
             bus = b
-    
+
     return bus * (min_time - earliest_time)
 
 
@@ -45,20 +44,19 @@ def shuttle_search_2(available_buses):
                     # to get this beautiful line of code.
                     increment *= bus
                     break
-        
-        if is_match == True:
+
+        if is_match:
             break
 
     return timestamp
 
 
-
 if __name__ == "__main__":
     records = read_input()
     earliest_time = int(records[0])
-    available_buses = [int(m) for m in re.findall("(\d{1,})", records[1])]
+    available_buses = [int(m) for m in re.findall(r"(\d{1,})", records[1])]
 
     print(f"Part 1: {shuttle_search(earliest_time, available_buses)}")
 
-    buses = [int(m) if m != "x" else m for m in re.findall("(\d{1,}|x)", records[1])]
+    buses = [int(m) if m != "x" else m for m in re.findall(r"(\d{1,}|x)", records[1])]
     print(f"Part 2: {shuttle_search_2(buses)}")

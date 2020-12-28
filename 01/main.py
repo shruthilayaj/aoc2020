@@ -16,7 +16,7 @@ def report_repair(data, target):
             return x * remainder
 
 
-def report_repair_2(data):
+def report_repair_2(data, target):
     for i, num_1 in enumerate(data, target):
         for j, num_2 in enumerate(data[i + 1:]):
             remainder = target - (num_1 + num_2)

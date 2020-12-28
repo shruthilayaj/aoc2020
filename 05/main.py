@@ -4,8 +4,9 @@ import os
 
 def read_input():
     filename = os.path.join(os.path.dirname(__file__), "input.txt")
-    with open(filename) as f:    
-        data = f.readlines()
+    with open(filename) as f:
+        data = f.read()
+        data = data.replace("F", "0").replace("B", "1").replace("L", "0").replace("R", "1")
 
     return data
 
@@ -13,29 +14,10 @@ def read_input():
 def binary_boarding(records):
     seat_ids = []
 
-    for record in records:
-        lower = 0
-        upper = 127
-
-        for char in record[:7]:
-            mid = lower + (upper - lower)/2
-            if char == "F":
-                upper = math.floor(mid)
-
-            if char == "B":
-                lower = math.ceil(mid)
-
-        left = 0
-        right = 7
-        for char in record[7:]:
-            mid = left + (right - left)/2
-            if char == "L":
-                right = math.floor(mid)
-            if char == "R":
-                left = math.ceil(mid)
-
-        seat_id = (lower * 8) + left
-        seat_ids.append(seat_id)
+    for row, column in records:
+        row = int(row, 2)
+        column = int(column, 2)
+        seat_ids.append((row * 8) + column)
 
     return seat_ids
 
@@ -60,7 +42,6 @@ def binary_boarding_2(seat_ids):
             if lower >= upper:
                 sorted_seat_ids.insert(lower, seat_id)
                 break
-    
 
     for i in range(len(sorted_seat_ids)):
         if sorted_seat_ids[i] == (sorted_seat_ids[i + 1] - 2):
@@ -70,7 +51,8 @@ def binary_boarding_2(seat_ids):
 
 
 if __name__ == "__main__":
-    records = [l.strip("\n") for l in read_input()]
+    records = read_input().split("\n")
+    records = [(rec[:7], rec[7:]) for rec in records]
     seat_ids = binary_boarding(records)
 
     print(f"Part 1: {max(seat_ids)}")

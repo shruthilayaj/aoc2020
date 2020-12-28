@@ -24,8 +24,8 @@ def conway_cubes(records, cycles):
 
     while i < cycles:
         records = (
-            [[[0]*len(records[0][0]) for _ in range(len(records[0]))]] + 
-            records + 
+            [[[0]*len(records[0][0]) for _ in range(len(records[0]))]] +
+            records +
             [[[0]*len(records[0][0]) for _ in range(len(records[0]))]]
         )
         for j, plane in enumerate(records):
@@ -75,7 +75,7 @@ def conway_cubes_2(records, cycles):
 
     while i < cycles:
         records = (
-            records + 
+            records +
             [[[[0]*len(records[0][0][0]) for _ in range(len(records[0][0]))] for _ in range(len(records[0]))]]
         )
         for _, three_d in enumerate(records):

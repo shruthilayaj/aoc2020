@@ -1,5 +1,4 @@
 import os
-import re
 
 
 class SumNotFound(Exception):
@@ -8,7 +7,7 @@ class SumNotFound(Exception):
 
 def read_input():
     filename = os.path.join(os.path.dirname(__file__), "input.txt")
-    with open(filename) as f:    
+    with open(filename) as f:
         data = f.readlines()
 
     return data
@@ -55,4 +54,3 @@ if __name__ == "__main__":
     target = encoding_error(records)
     print(f"Part 1: {target}")
     print(f"Part 2: {encoding_error_2(target)}")
-

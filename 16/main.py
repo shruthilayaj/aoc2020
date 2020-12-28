@@ -1,5 +1,4 @@
 import os
-import functools
 import re
 
 
@@ -55,10 +54,7 @@ def ticket_translation(rules, records):
                     return 0
         return num
 
-    total = functools.reduce(
-        lambda x, y: x + y,
-        [is_valid(num) for record in records for num in record],  # mimicing a flatmap
-    )
+    total = sum([is_valid(num) for record in records for num in record])
 
     return total
 

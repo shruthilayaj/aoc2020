@@ -8,12 +8,12 @@ from matplotlib.animation import FuncAnimation
 
 def read_input():
     filename = os.path.join(os.path.dirname(__file__), "input.txt")
-    with open(filename) as f:    
+    with open(filename) as f:
         data = f.readlines()
 
     records = []
     for line in data:
-        m = re.match("(N|E|W|S|F|L|R)(\d*)", line)
+        m = re.match(r"(N|E|W|S|F|L|R)(\d*)", line)
         records.append((m.group(1), int(m.group(2))))
 
     return records
@@ -56,7 +56,7 @@ def rain_risk(records):
 
     ani = FuncAnimation(fig, animate, repeat=False, interval=200)
     plt.show()
-    
+
     return abs(coordinate[0]) + abs(coordinate[1])
 
 
@@ -76,7 +76,7 @@ def rain_risk_2(records):
 
     for action, magnitude in records:
         ship_coordinates, waypoint_coordinates = func[action](ship_coordinates, waypoint_coordinates, magnitude)
-    
+
     return abs(ship_coordinates[0]) + abs(ship_coordinates[1])
 
 

@@ -2,9 +2,19 @@ import os
 import re
 
 
+class Node(object):
+    def __init__(self, data):
+        self.data = data
+        self.contains = []
+        self.contained_in = []
+
+    def __repr__(self):
+        return self.data
+
+
 def read_input():
     filename = os.path.join(os.path.dirname(__file__), "input.txt")
-    with open(filename) as f:    
+    with open(filename) as f:
         data = f.readlines()
 
     return data
@@ -14,47 +24,49 @@ def _parse_input(records):
     parsed = {}
     for record in records:
         parent, children = record.split("contain")
-        parent = re.match("(.*) bags", parent).group(1)
-        children = re.findall(" {0,}(\d*|no) (.*?) bag", children)
-        parsed[parent] = {x1: x0 for x0, x1 in children}
-    
+        parent = re.match(r"(.*) bags", parent).group(1)
+        children = re.findall(r" {0,}(\d*|no) (.*?) bag", children)
+
+        try:
+            bag = parsed[parent]
+        except KeyError:
+            bag = Node(parent)
+
+        parsed[parent] = bag
+        for num, child in children:
+            try:
+                child_ = parsed[child]
+            except KeyError:
+                child_ = Node(child)
+
+            child_.contained_in.append(bag)
+            parsed[child] = child_
+
+            if num != "no":
+                bag.contains.append((child_, int(num)))
+
     return parsed
 
 
-def handy_haversack(records, search_for):
-    """
+def handy_haversack(head):
+    allowed_bags = set()
+    search = [head]
 
-    """
-    new_search = []
-    to_pop = []
-    count=0
-    for parent, children in records.items():
-        if any(key in children for key in search_for):
-            count += 1
-            to_pop.append(parent)
-            new_search.append(parent)
+    while search:
+        bag = search.pop()
+        allowed_bags = allowed_bags.union(set(bag.contained_in))
+        search.extend(bag.contained_in)
 
-    [records.pop(k) for k in to_pop]
+    return len(allowed_bags)
 
-    if len(new_search) == 0:
+
+def handy_haversack_2_linked(bag):
+    count = 1
+    if not bag.contains:
         return count
-    else:
-        count += handy_haversack(records, new_search) 
-        return count
-    
 
-def handy_haversack_2(records, search_through):
-    count = 0
-    while True:
-        try:
-            bag, num = search_through.pop()
-        except IndexError:
-            break
-
-        for nested_bag, n in records[bag].items():
-            if nested_bag != "other":
-                search_through.append((nested_bag, int(n)*int(num)))
-                count += int(n) * num
+    for child, num in bag.contains:
+        count += num * handy_haversack_2_linked(child)
 
     return count
 
@@ -62,7 +74,5 @@ def handy_haversack_2(records, search_through):
 if __name__ == "__main__":
     records = _parse_input(read_input())
 
-    total = handy_haversack(records, ["shiny gold"])
-    print(f"Part 1: {total}")
-    total = handy_haversack_2(records, [("shiny gold", 1)])
-    print(f"Part 2: {total}")
+    print(f"Part 1: {handy_haversack(records['shiny gold'])}")
+    print(f"Part 2: {handy_haversack_2_linked(records['shiny gold']) - 1}")

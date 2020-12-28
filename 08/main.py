@@ -4,7 +4,7 @@ import re
 
 def read_input():
     filename = os.path.join(os.path.dirname(__file__), "input.txt")
-    with open(filename) as f:    
+    with open(filename) as f:
         data = f.readlines()
 
     return data
@@ -15,7 +15,7 @@ def _parse_input(records):
     for record in records:
         match = re.match("(nop|acc|jmp) ((\+|-)\d*)", record)
         parsed.append((match.group(1), int(match.group(2))))
-    
+
     return parsed
 
 
@@ -91,4 +91,3 @@ if __name__ == "__main__":
 
     print(f"Part 1: {handheld_halting(records)}")
     print(f"Part 2: {handheld_halting_2(records)}")
-

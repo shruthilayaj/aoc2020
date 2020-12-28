@@ -1,4 +1,3 @@
-import functools
 import os
 import re
 
@@ -40,10 +39,7 @@ def docking_data(records):
     for key, value, ones, zeros, _ in records:
         mem[key] = (value, ones, zeros)
 
-    total = functools.reduce(
-        lambda x, y: x + y,
-        list(map(lambda v: (v[0] | v[1]) & v[2], mem.values())),
-    )
+    total = sum(map(lambda v: (v[0] | v[1]) & v[2], mem.values()))
 
     return total
 
