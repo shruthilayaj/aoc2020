@@ -1,5 +1,6 @@
 import os
 import re
+from itertools import product
 
 from aoc2020.utils.decorators import timer
 
@@ -21,7 +22,8 @@ def _parse_input(records):
             mask = match.group(1)
             ones = int(mask.replace("X", "0"), 2)
             zeros = int(mask.replace("X", "1"), 2)
-            floats = mask.replace("1", "0").replace("X", "1")
+            # floats = mask.replace("1", "0").replace("X", "1")
+            floats = mask
 
             continue
 
@@ -48,30 +50,21 @@ def docking_data(records):
 def docking_data_2(records):
     mem = {}
 
-    for k, val, ones, zeros, floats in records:
-        base = ((k | int(floats, 2)) ^ int(floats, 2)) | ones
-        floats = list(floats)
-        a = []
-        for i, binary in enumerate(floats):
-            if binary == "1":
-                if len(a) == 0:
-                    a = ["0", "1"]
+    for k, val, _, _, floats in records:
+        num_float = floats.count("X")
+        base = (k | int(floats.replace("X", "0"), 2))
+        permuations = list(product(["0", "1"], repeat=num_float))
+        for p in permuations:
+            new_bin = ""
+            count = 0
+            for i, char in enumerate(f"{base:036b}"):
+                if floats[i] == "X":
+                    new_bin += p[count]
+                    count += 1
                 else:
-                    a.extend(a)
-                    for i, num in enumerate(a[:]):
-                        if i < len(a)/2:
-                            a[i] = num + "0"
-                        else:
-                            a[i] = num + "1"
-            else:
-                if len(a) == 0:
-                    a = ["0"]
-                else:
-                    a = [x + "0" for x in a]
+                    new_bin += char
 
-        for v in a:
-            k_ = base | int(v, 2)
-            mem[k_] = val
+            mem[new_bin] = val
 
     return sum(mem.values())
 
